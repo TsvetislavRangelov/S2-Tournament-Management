@@ -1,0 +1,130 @@
+﻿@page
+@model S2_Synthesis.Pages.ViewTournamentModel
+@{
+    Layout = "_LoggedIn";
+}
+
+<div class="card w-100" style="width: 18rem;">
+    <form method="post">
+        <img class="card-img-top" src="~/img/Screenshot_1.png" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Sport: @Model.Selected.Type</h5>
+            <p class="card-text">Details: @Model.Selected.Description</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><p>Minimum Players: @Model.Selected.MinPlayers</p></li>
+            <li class="list-group-item"><p>Maximum Players: @Model.Selected.MaxPlayers</p></li>
+            <li class="list-group-item"><p>Scoring System: @Model.Selected.PlayingSystem</p></li>
+        </ul>
+        <div class="card-body">
+            @{
+                if (Model.Games.Length > 0 || DateTime.Compare(Model.Selected.StartDate, DateTime.Now) <= 0)
+                {
+                    <h3>The tournament has already started, registration is suspended.</h3>
+                }
+                else
+                {
+
+                    if (Model.RegisteredPlayers > Model.Selected.MaxPlayers)
+                    {
+                        <h5>All players slots have already been filled.</h5>
+                    }
+                    if (Model.ptm.IsPlayerRegisteredForTournament(Model.Selected.Id, Model.LoggedUser.Id))
+                    {
+                        <input class="btn-danger" type="submit" value="Exit Tournament" asp-page-handler="Exit" />
+                    }
+                    else
+                    {
+                        <input class="btn btn-primary" type="submit" value="Register" asp-page-handler="Register" />
+                        <input class="btn btn-secondary" type="submit" name="name" value="Go Back" asp-page-handler="Cancel" />
+                    }
+                }
+
+            }
+        </div>
+
+    </form>
+
+
+
+</div>
+@{
+    if (Model.Games.Length == 0)
+    {
+        <h1 class="text-center">No games are currently scheduled for this tournament.</h1>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <tr>
+                <th>#</th>
+                <th>Matches</th>
+                <th>Scores</th>
+            </tr>
+            @for (int i = 0; i < Model.Games.Length; i++)
+            {
+
+                Models.User p1 = Model.um.FindUserById(Model.Games[i].Player1.Id);
+                Models.User p2 = Model.um.FindUserById(Model.Games[i].Player2.Id);
+                if (Model.Games[i].Player1Score > 0 || Model.Games[i].Player2Score > 0)
+                {
+                    <tr style="background-color: green;">
+                        <td>@i</td>
+                        <td>
+                            @p1.FirstName  @p1.LastName - @p2.FirstName  @p2.LastName
+                        </td>
+                        <td>
+                            @Model.Games[i].Player1Score - @Model.Games[i].Player2Score
+                        </td>
+
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>
+                            @if (p1 == null)
+                            {
+                                <p>Bye - @p2.FirstName  @p2.LastName </p>
+                            }
+                            @if (p2 == null)
+                            {
+                                <p>@p1.FirstName  @p1.LastName - Bye  </p>
+                            }
+                            @if (p1 != null && p2 != null)
+                            {
+                                <p>@p1.FirstName @p1.LastName - @p2.FirstName  @p2.LastName</p>
+                            }
+
+                        </td>
+                        <td>
+                            @Model.Games[i].Player1Score - @Model.Games[i].Player2Score
+                        </td>
+
+                    </tr>
+                }
+
+            }
+        </table>
+    }
+}
+
+<div class="text-center">
+    @if (Model.Winners == null || Model.Winners.Count < 3)
+    {
+        <h4>Standings cannot be calculated at the moment, too few games have been completed</h4>
+    }
+    else
+    {
+        <h3 class="text-primary">
+            Current standings
+        </h3>
+
+        <p class="font-weight-bold" style="color: gold">Gold: @Model.um.FindUserById(Model.Winners.ElementAt(0)).LastName </p>
+        <p class="font-weight-bold" style="color: silver">Silver: @Model.um.FindUserById(Model.Winners.ElementAt(1)).LastName</p>
+        <p class="font-weight-bold" style="color: saddlebrown">Bronze: @Model.um.FindUserById(Model.Winners.ElementAt(2)).LastName</p>
+    }
+
+</div>
+

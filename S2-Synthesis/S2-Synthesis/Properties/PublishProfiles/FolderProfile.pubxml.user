@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\s2-synthesis-tsvetislav\S2-Synthesis\S2-Synthesis\bin\Release\net5.0\publish\</_PublishTargetUrl>
+    <History>True|2022-06-09T22:58:39.9529097Z;False|2022-06-10T00:55:19.6026310+02:00;</History>
+  </PropertyGroup>
+</Project>

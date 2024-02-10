@@ -1,0 +1,56 @@
+﻿@page
+@model S2_Synthesis.Pages.UserProfileModel
+@{
+    Layout = "_LoggedIn";
+}
+<div class="row">
+    <div class="col-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h1>Statistics and details</h1>
+                <h5 class="card-title">@Model.Player.FirstName  @Model.Player.LastName </h5>
+                <p class="card-text">Email: @Model.Player.Email</p>
+                <p class="card-tex">Nationality: @Model.Player.Nationality</p>
+                <p class="card-text">Your wins: @Model.Player.Wins</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <h1 class="text-justify text-primary">Your tournaments</h1>
+        @if (Model.tournaments.Length == 0)
+        {
+            <h5>You haven't participated in any tournaments yet.</h5>
+        }
+        else
+        {
+            <table class="table-bordered text-center">
+
+                <tr>
+                    <th>Sport</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Minimum Players</th>
+                    <th>Maximum Players</th>
+                    <th>Scoring System</th>
+                </tr>
+                @foreach (Models.Tournament t in Model.tournaments)
+                {
+                    string fullStartDate = t.StartDate.ToString();
+                    string fullEndDate = t.EndDate.ToString();
+                    string legitStartDate = fullStartDate.Substring(0, fullStartDate.IndexOf(' '));
+                    string legitEndDate = fullEndDate.Substring(0, fullEndDate.IndexOf(' '));
+                    <tr>
+                        <td>@t.Type</td>
+                        <td>@legitStartDate</td>
+                        <td>@legitEndDate</td>
+                        <td>@t.MinPlayers.ToString()</td>
+                        <td>@t.MaxPlayers.ToString()</td>
+                        <td>@t.PlayingSystem.ToString()</td>
+                        <td><a class="btn btn-outline-secondary" asp-page="/ViewTournament" asp-route-id="@t.Id">View Details</a></td>
+                    </tr>
+                }
+            </table>
+        }
+
+    </div>
+</div>

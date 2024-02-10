@@ -1,0 +1,39 @@
+﻿@page
+@model S2_Synthesis.Pages.TournamentsModel
+@{
+    Layout = "_LoggedIn";
+}
+
+<form method="post">
+    <table class="table table-dark">
+        <thead class="thead-dark">
+            <tr>
+                <th>Sport</th>
+                <th>Start Date</th>
+                <th>EndDate</th>
+                <th>Minimum Players</th>
+                <th>Maximum Players</th>
+                <th>Scoring System</th>
+            </tr>
+        </thead>
+
+        @foreach(Models.Tournament t in Model.Tournaments)
+        {
+            string fullStartDate = t.StartDate.ToString();
+            string fullEndDate = t.EndDate.ToString();
+            string legitStartDate = fullStartDate.Substring(0, fullStartDate.IndexOf(' '));
+            string legitEndDate = fullEndDate.Substring(0, fullEndDate.IndexOf(' '));
+            <tr>
+                <td>@t.Type</td>
+                <td>@legitStartDate</td>
+                <td>@legitEndDate</td>
+                <td>@t.MinPlayers.ToString()</td>
+                <td>@t.MaxPlayers.ToString()</td>
+                <td>@t.PlayingSystem.ToString()</td>
+                <td><a class="btn btn-outline-secondary" asp-page="/ViewTournament" asp-route-id="@t.Id">View Details</a></td>
+            </tr>
+        }
+    </table>
+</form>
+
+

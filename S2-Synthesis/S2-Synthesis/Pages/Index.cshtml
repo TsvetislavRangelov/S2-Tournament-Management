@@ -1,0 +1,36 @@
+﻿
+@page
+@using Microsoft.AspNetCore.Http
+@model IndexModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Home page";
+    if (HttpContext.Session.GetString("UserID") is not null)
+    {
+        Layout = "_LoggedIn";
+    }
+}
+<link href="~/css/home.css" rel="stylesheet" />
+<div class="align-text-bottom" style="position: relative; top: 150px;">
+    <h1 class="text-lg-center">Welcome to DuelSys Inc. Tournaments!</h1>
+    <h2>News</h2>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">2022 African Athletics Championship</h5>
+                    <p class="card-text">2022 African Athletics Championships: Ferdinand Omanyala edges Akani Simbine to take 100m title; Caster Semenya finishes 5000m in sixth</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Badminton Indonesia Masters 2022</h5>
+                    <p class="card-text">Ginting soars at home as PV Sindhu and Lee Zii Jia also make quarter-finals to beat out the rest of the competition.</p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
